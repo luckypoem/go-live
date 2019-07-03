@@ -128,9 +128,10 @@ func (s *Server) handleConn(conn *core.Conn) error {
 		s.handler.HandleReader(reader)
 		log.Printf("new publisher: %+v", reader.Info())
 		splited := strings.Split(reader.Info().Key, "_")
+		livename := splited[0]
 		token := splited[1]
 
-		fmt.Println(token)
+		fmt.Println(livename, token)
 
 		if s.getter != nil {
 			writeType := reflect.TypeOf(s.getter)

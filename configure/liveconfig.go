@@ -2,16 +2,20 @@ package configure
 
 import (
 	"go-live/models"
+	"log"
 )
 
 func CheckAppName(appname string) bool {
-	lives, _ := models.GetAllLives()
+	lives, err := models.GetAppsByNameorLiveon(appname)
 
-	for _, app := range lives {
-		if (app.Appname == appname) && (app.Liveon == "on") {
-			return true
-		}
+	if err != nil {
+		log.Println(err)
 	}
+
+	if len(lives) == 1 {
+		return true
+	}
+
 	return false
 }
 
