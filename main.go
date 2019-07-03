@@ -4,6 +4,7 @@ import (
 	"flag"
 	"go-live/protocol/httpflv"
 	"go-live/protocol/httpopera"
+	"go-live/protocol/restfulapi"
 	"go-live/protocol/rtmp"
 	"log"
 	"net"
@@ -14,6 +15,7 @@ var (
 	rtmpAddr    = flag.String("rtmp-addr", ":1935", "RTMP server listen address")
 	httpFlvAddr = flag.String("httpflv-addr", ":7001", "HTTP-FLV server listen address")
 	operaAddr   = flag.String("manage-addr", ":8090", "HTTP manage interface server listen address")
+	apiAddr     = flag.String("api-addr", ":8040", "HTTP Restful API listen address")
 )
 
 func init() {
@@ -38,6 +40,28 @@ func startRtmp(stream *rtmp.RtmpStream) {
 	}()
 	log.Println("RTMP Listen On", *rtmpAddr)
 	rtmpServer.Serve(rtmpListen)
+}
+
+func startAPI() {
+	apiListen, err := net.Listen("tcp", *apiAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var apiServer *restfulapi.Server
+
+	apiServer = restfulapi.NewServer()
+
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				log.Println("API server panic: ", r)
+			}
+		}()
+
+		log.Println("API Listen On", *apiAddr)
+		apiServer.Serve(apiListen)
+	}()
 }
 
 func startHTTPFlv(stream *rtmp.RtmpStream) {
@@ -80,7 +104,7 @@ func startHTTPOpera(stream *rtmp.RtmpStream) {
 func main() {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Println("livego panic: ", r)
+			log.Println("go-live panic: ", r)
 			time.Sleep(1 * time.Second)
 		}
 	}()
@@ -88,5 +112,6 @@ func main() {
 	stream := rtmp.NewRtmpStream()
 	startHTTPFlv(stream)
 	startHTTPOpera(stream)
+	startAPI()
 	startRtmp(stream)
 }

@@ -4,12 +4,14 @@ go 1.12
 
 require (
 	github.com/go-sql-driver/mysql v1.4.1
-	github.com/gwuhaolin/livego v0.0.0-20190405021653-1ad8ba7e40c6
+	github.com/google/go-cmp v0.3.0 // indirect
 	github.com/jinzhu/gorm v1.9.8
+	github.com/julienschmidt/httprouter v1.2.0
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/orcaman/concurrent-map v0.0.0-20190314100340-2693aad1ed75
 	github.com/satori/go.uuid v1.2.0
 	github.com/stretchr/testify v1.3.0
+	google.golang.org/appengine v0.0.0-00010101000000-000000000000 // indirect
 )
 
 replace (
