@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/go-sql-driver/mysql v1.4.1
+	github.com/gwuhaolin/livego v0.0.0-20190405021653-1ad8ba7e40c6
 	github.com/jinzhu/gorm v1.9.8
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/orcaman/concurrent-map v0.0.0-20190314100340-2693aad1ed75

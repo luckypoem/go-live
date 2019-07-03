@@ -2,8 +2,8 @@ package httpflv
 
 import (
 	"encoding/json"
-	"fmt"
 	"go-live/av"
+	"go-live/models"
 	"go-live/protocol/rtmp"
 	"log"
 	"net"
@@ -125,7 +125,17 @@ func (server *Server) handleConn(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	fmt.Println(paths)
+	appname := paths[0]
+	splited := strings.Split(paths[1], "_")
+	if len(splited) < 2 {
+		http.Error(w, "param is too short.", http.StatusBadRequest)
+	}
+	livename := splited[0]
+	token := splited[1]
+
+	if !models.CheckPlayerToken(appname, livename, token) {
+		http.Error(w, "player token is error", http.StatusBadRequest)
+	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	writer := NewFLVWriter(paths[0], paths[1], url, w)

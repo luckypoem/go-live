@@ -7,6 +7,7 @@ import (
 	"go-live/av"
 	"go-live/configure"
 	"go-live/container/flv"
+	"go-live/models"
 	"go-live/protocol/rtmp/core"
 	"go-live/utils/uid"
 	"log"
@@ -128,10 +129,19 @@ func (s *Server) handleConn(conn *core.Conn) error {
 		s.handler.HandleReader(reader)
 		log.Printf("new publisher: %+v", reader.Info())
 		splited := strings.Split(reader.Info().Key, "_")
-		livename := splited[0]
+		if len(splited) < 2 {
+			conn.Close()
+			return errors.New("input params not to len")
+		}
+		livename := strings.Split(splited[0], "/")[1]
 		token := splited[1]
 
-		fmt.Println(livename, token)
+		if !models.CheckPublisherToken(appname, livename, token) {
+			err := errors.New(fmt.Sprintf("publisher token=%s is not configured", token))
+			conn.Close()
+			log.Println("CheckAppName err:", err)
+			return err
+		}
 
 		if s.getter != nil {
 			writeType := reflect.TypeOf(s.getter)
@@ -142,6 +152,21 @@ func (s *Server) handleConn(conn *core.Conn) error {
 	} else {
 		writer := NewVirWriter(connServer)
 		log.Printf("new player: %+v", writer.Info())
+		splited := strings.Split(writer.Info().Key, "_")
+		if len(splited) < 2 {
+			conn.Close()
+			return errors.New("input params not to len")
+		}
+		livename := strings.Split(splited[0], "/")[1]
+		token := splited[1]
+
+		if !models.CheckPlayerToken(appname, livename, token) {
+			err := errors.New(fmt.Sprintf("publisher token=%s is not configured", token))
+			conn.Close()
+			log.Println("CheckAppName err:", err)
+			return err
+		}
+
 		s.handler.HandleWriter(writer)
 	}
 

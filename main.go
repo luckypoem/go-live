@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"go-live/protocol/hls"
 	"go-live/protocol/httpflv"
 	"go-live/protocol/httpopera"
 	"go-live/protocol/rtmp"
@@ -24,25 +23,7 @@ func init() {
 	flag.Parse()
 }
 
-func startHls() *hls.Server {
-	hlsListen, err := net.Listen("tcp", *hlsAddr)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	hlsServer := hls.NewServer()
-	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				log.Println("HLS server panic: ", r)
-			}
-		}()
-		hlsServer.Serve(hlsListen)
-	}()
-	return hlsServer
-}
-
-func startRtmp(stream *rtmp.RtmpStream, hlsServer *hls.Server) {
+func startRtmp(stream *rtmp.RtmpStream) {
 	rtmpListen, err := net.Listen("tcp", *rtmpAddr)
 	if err != nil {
 		log.Fatal(err)
@@ -50,13 +31,8 @@ func startRtmp(stream *rtmp.RtmpStream, hlsServer *hls.Server) {
 
 	var rtmpServer *rtmp.Server
 
-	if hlsServer == nil {
-		rtmpServer = rtmp.NewRtmpServer(stream, nil)
-		log.Printf("hls server disable....")
-	} else {
-		rtmpServer = rtmp.NewRtmpServer(stream, hlsServer)
-		log.Printf("hls server enable....")
-	}
+	rtmpServer = rtmp.NewRtmpServer(stream, nil)
+	log.Println("hls server disable....")
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -113,10 +89,7 @@ func main() {
 	}()
 
 	stream := rtmp.NewRtmpStream()
-	hlsServer := startHls()
 	startHTTPFlv(stream)
 	startHTTPOpera(stream)
-
-	startRtmp(stream, hlsServer)
-	//startRtmp(stream, nil)
+	startRtmp(stream)
 }

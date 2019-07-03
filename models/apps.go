@@ -6,7 +6,6 @@ type App struct {
 	Id      int
 	Appname string `gorm:"not null;unique"`
 	Liveon  string `gorm:"not null"`
-	Hlson   string `gorm:"not null"`
 }
 
 func init() {
