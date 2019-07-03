@@ -23,6 +23,7 @@ func CheckPublisherToken(appname string, livename string, token string) bool {
 
 	if err != nil {
 		log.Println(err)
+		return false
 	}
 
 	if len(lives) == 1 {
@@ -38,6 +39,23 @@ func CheckPlayerToken(appname string, livename string, token string) bool {
 
 	if err != nil {
 		log.Println(err)
+		return false
+	}
+
+	if len(lives) == 1 {
+		return true
+	}
+
+	return false
+}
+
+func CheckLive(livename string) bool {
+	var lives []Live
+	err := orm.Gorm.Where("livename = ?", livename).Find(&lives).Error
+
+	if err != nil {
+		log.Println(err)
+		return false
 	}
 
 	if len(lives) == 1 {

@@ -134,12 +134,19 @@ func (s *Server) handleConn(conn *core.Conn) error {
 			return errors.New("input params not to len")
 		}
 		livename := strings.Split(splited[0], "/")[1]
+		if !models.CheckLive(livename) {
+			err := errors.New(fmt.Sprintf("publisher livename=%s is not configured", livename))
+			conn.Close()
+			log.Println("CheckLive err:", err)
+			return err
+		}
+
 		token := splited[1]
 
 		if !models.CheckPublisherToken(appname, livename, token) {
 			err := errors.New(fmt.Sprintf("publisher token=%s is not configured", token))
 			conn.Close()
-			log.Println("CheckAppName err:", err)
+			log.Println("Check publisher token err:", err)
 			return err
 		}
 
@@ -158,12 +165,19 @@ func (s *Server) handleConn(conn *core.Conn) error {
 			return errors.New("input params not to len")
 		}
 		livename := strings.Split(splited[0], "/")[1]
+		if !models.CheckLive(livename) {
+			err := errors.New(fmt.Sprintf("publisher livename=%s is not configured", livename))
+			conn.Close()
+			log.Println("checklive err:", err)
+			return err
+		}
+
 		token := splited[1]
 
 		if !models.CheckPlayerToken(appname, livename, token) {
 			err := errors.New(fmt.Sprintf("publisher token=%s is not configured", token))
 			conn.Close()
-			log.Println("CheckAppName err:", err)
+			log.Println("checkplayertoken err:", err)
 			return err
 		}
 

@@ -12,6 +12,14 @@ func init() {
 	orm.Gorm.AutoMigrate(new(App))
 }
 
+func CreateApp(app *App) error {
+	err := orm.Gorm.Create(app).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func GetAllApps() ([]App, error) {
 	var apps []App
 	err := orm.Gorm.Find(&apps).Error
