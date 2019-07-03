@@ -131,6 +131,10 @@ func (server *Server) handleConn(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "param is too short.", http.StatusBadRequest)
 	}
 	livename := splited[0]
+	if !models.CheckLive(livename) {
+		http.Error(w, "player livename is error", http.StatusBadRequest)
+	}
+
 	token := splited[1]
 
 	if !models.CheckPlayerToken(appname, livename, token) {
