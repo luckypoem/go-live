@@ -3,6 +3,8 @@ package orm
 import (
 	"log"
 
+	"go-live/conf"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -12,7 +14,13 @@ var Gorm *gorm.DB
 func init() {
 	var err error
 
-	Gorm, err = gorm.Open("mysql", "root:Xr111900@tcp(rm-wz9p9wn6719qplwioho.mysql.rds.aliyuncs.com:3306)/livego?charset=utf8")
+	config, err := conf.LoadConfigFromFile("./config.toml")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	Gorm, err = gorm.Open("mysql", config.MySQLDSN)
 
 	if err != nil {
 		log.Fatal(err)
