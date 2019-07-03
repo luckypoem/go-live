@@ -11,11 +11,10 @@ import (
 )
 
 var (
-	rtmpAddr       = flag.String("rtmp-addr", ":1935", "RTMP server listen address")
-	httpFlvAddr    = flag.String("httpflv-addr", ":7001", "HTTP-FLV server listen address")
-	hlsAddr        = flag.String("hls-addr", ":7002", "HLS server listen address")
-	operaAddr      = flag.String("manage-addr", ":8090", "HTTP manage interface server listen address")
-	configfilename = flag.String("cfgfile", "livego.cfg", "live configure filename")
+	rtmpAddr    = flag.String("rtmp-addr", ":1935", "RTMP server listen address")
+	httpFlvAddr = flag.String("httpflv-addr", ":7001", "HTTP-FLV server listen address")
+	hlsAddr     = flag.String("hls-addr", ":7002", "HLS server listen address")
+	operaAddr   = flag.String("manage-addr", ":8090", "HTTP manage interface server listen address")
 )
 
 func init() {
