@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"go-live/configure"
 	"go-live/protocol/hls"
 	"go-live/protocol/httpflv"
 	"go-live/protocol/httpopera"
@@ -112,10 +111,6 @@ func main() {
 			time.Sleep(1 * time.Second)
 		}
 	}()
-	err := configure.LoadConfig(*configfilename)
-	if err != nil {
-		return
-	}
 
 	stream := rtmp.NewRtmpStream()
 	hlsServer := startHls()
