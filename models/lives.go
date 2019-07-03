@@ -8,7 +8,7 @@ import (
 type Live struct {
 	Id             int
 	App            string `gorm:"not null"`
-	Livename       string `gorm:"not null;unique"`
+	Livename       string `gorm:"not null"`
 	PublisherToken string `gorm:"not null;unique"`
 	PlayerToken    string `gorm:"not null;unique"`
 }
