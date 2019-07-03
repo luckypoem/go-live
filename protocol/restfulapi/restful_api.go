@@ -17,6 +17,12 @@ func NewServer() *Server {
 func (server *Server) Serve(l net.Listener) error {
 	router := httprouter.New()
 
+	router.POST("/api/apps", server.CreateAppHandler)
+
 	http.Serve(l, router)
 	return nil
+}
+
+func (server *Server) CreateAppHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
 }

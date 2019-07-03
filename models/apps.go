@@ -1,6 +1,9 @@
 package models
 
-import "go-live/orm"
+import (
+	"errors"
+	"go-live/orm"
+)
 
 type App struct {
 	Id      int
@@ -20,6 +23,21 @@ func CreateApp(app *App) error {
 	return nil
 }
 
+func GetAppById(id int) (*App, error) {
+	var apps []App
+
+	err := orm.Gorm.Where("id = ?", id).Find(&apps).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if len(apps) == 0 {
+		return nil, errors.New("error is rellay apps")
+	}
+
+	return &apps[0], err
+}
+
 func GetAllApps() ([]App, error) {
 	var apps []App
 	err := orm.Gorm.Find(&apps).Error
@@ -27,6 +45,15 @@ func GetAllApps() ([]App, error) {
 		return nil, err
 	}
 	return apps, nil
+}
+
+func DeleteApp(app *App) error {
+	err := orm.Gorm.Delete(app).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func GetAppsByNameorLiveon(appname string) ([]App, error) {
