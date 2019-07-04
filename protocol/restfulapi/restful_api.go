@@ -4,7 +4,7 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gin-gonic/gin"
 )
 
 type Server struct {
@@ -15,14 +15,9 @@ func NewServer() *Server {
 }
 
 func (server *Server) Serve(l net.Listener) error {
-	router := httprouter.New()
-
-	router.POST("/api/apps", server.CreateAppHandler)
+	gin.SetMode(gin.ReleaseMode)
+	router := gin.Default()
 
 	http.Serve(l, router)
 	return nil
-}
-
-func (server *Server) CreateAppHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
 }
