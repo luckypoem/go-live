@@ -17,7 +17,7 @@ func NewServer() *Server {
 func (server *Server) Serve(l net.Listener) error {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-
+	
 	http.Serve(l, router)
 	return nil
 }
