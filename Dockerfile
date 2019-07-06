@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM alpine:latest
 
 WORKDIR /app
 
@@ -9,6 +9,6 @@ EXPOSE 7001
 EXPOSE 8090
 EXPOSE 8040
 
-RUN chmod +x /app/main
+RUN chmod 755 /app/main
 
 ENTRYPOINT [ "./main" ]

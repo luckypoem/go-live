@@ -10,8 +10,7 @@ run: default
 	cd ${GOPATH}/bin;./go-live
 
 docker: deps
-	go install
-	cp ${GOPATH}/bin/go-live ./main
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 	sudo docker build -t go-live .
 
 clean:
