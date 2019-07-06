@@ -26,3 +26,28 @@ func UpdateAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.
 func DeleteAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }
+
+// Live Restful API
+func CreateLiveHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
+func ListLivesHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
+func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
+func UpdateLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
+func UpdateLiveTokenByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
+func DeleteLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
