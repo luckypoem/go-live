@@ -129,7 +129,17 @@ func CreateLiveHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 }
 
 func ListLivesHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	lives, err := models.GetAllLives()
+	if err != nil {
+		SendErrorResponse(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
+	SendResponse(w, LivesResponse{
+		Code:    http.StatusOK,
+		Message: "Successfully acquired all lives.",
+		Data:    lives,
+	})
 }
 
 func ListLivesByAppnameHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

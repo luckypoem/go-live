@@ -34,6 +34,12 @@ type CreateLiveResponse struct {
 	Message string `json:"message"`
 }
 
+type LivesResponse struct {
+	Code    int           `json:"code"`
+	Data    []models.Live `json:"data"`
+	Message string        `json:"message"`
+}
+
 func SendErrorResponse(w http.ResponseWriter, code int, message string) {
 	SendResponse(w, &ErrorResponse{
 		Code:    code,
