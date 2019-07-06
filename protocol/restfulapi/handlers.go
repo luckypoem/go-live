@@ -124,7 +124,7 @@ func CreateLiveHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		return
 	}
 
-	SendResponse(w, &CreateLiveResponse{
+	SendResponse(w, &LiveTokenResponse{
 		Code:    http.StatusOK,
 		Message: "Successfully created this live.",
 		Token:   token,
@@ -185,7 +185,35 @@ func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 }
 
 func RefershLiveTokenByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	var lives []models.Live
+	appname := ps.ByName("appname")
+	liveid := ps.ByName("liveid")
+	token := functions.RandomString(6)
 
+	err := orm.Gorm.Where("app = ?", appname).Where("id = ?", liveid).Find(&lives).Error
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if len(lives) == 0 {
+		SendErrorResponse(w, http.StatusBadRequest, errors.New("lives cannot find.").Error())
+		return
+	}
+
+	err = orm.Gorm.Model(&lives[0]).Update("Token", token).Error
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	SendResponse(w, &LiveTokenResponse{
+		Code:    http.StatusOK,
+		Message: "Successfully refreshed Token.",
+		Token:   token,
+	})
 }
 
 func DeleteLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

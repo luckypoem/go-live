@@ -28,7 +28,7 @@ type AppResponse struct {
 	Message string      `json:"message"`
 }
 
-type CreateLiveResponse struct {
+type LiveTokenResponse struct {
 	Code    int    `json:"code"`
 	Token   string `json:"token"`
 	Message string `json:"message"`
