@@ -98,7 +98,21 @@ func DeleteAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 
+	app, err := models.GetAppById(id)
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	err = models.DeleteApp(&models.App{Id: id})
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = models.DeleteLive(&models.Live{App: app.Appname})
 
 	if err != nil {
 		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
