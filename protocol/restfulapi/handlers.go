@@ -140,7 +140,7 @@ func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 
 }
 
-func UpdateLiveTokenByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func RefershLiveTokenByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }
 

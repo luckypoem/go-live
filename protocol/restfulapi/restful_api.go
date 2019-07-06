@@ -28,7 +28,7 @@ func (server *Server) Serve(l net.Listener) error {
 	router.GET("/live/", ListLivesHandler)
 	router.GET("/live/:appname", ListLivesByAppnameHandler)
 	router.GET("/live/:appname/:liveid/get", GetLiveByIdHandler)
-	router.PUT("/live/:appname/:liveid/token", UpdateLiveTokenByIdHandler)
+	router.PUT("/live/:appname/:liveid/refershtoken", RefershLiveTokenByIdHandler)
 	router.DELETE("/live/:appname/:liveid", DeleteLiveByIdHandler)
 
 	http.Serve(l, router)
