@@ -32,7 +32,18 @@ func CreateAppHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Para
 }
 
 func ListAppsHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	apps, err := models.GetAllApps()
 
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	SendResponse(w, &AppsResponse{
+		Code:    http.StatusOK,
+		Data:    apps,
+		Message: "Successfully acquired all applications.",
+	})
 }
 
 func GetAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

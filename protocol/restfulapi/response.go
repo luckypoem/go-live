@@ -2,6 +2,7 @@ package restfulapi
 
 import (
 	"encoding/json"
+	"go-live/models"
 	"net/http"
 )
 
@@ -13,6 +14,12 @@ type ErrorResponse struct {
 type Response struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
+}
+
+type AppsResponse struct {
+	Code    int          `json:"code"`
+	Data    []models.App `json:"data"`
+	Message string       `json:"message"`
 }
 
 func SendErrorResponse(w http.ResponseWriter, code int, message string) {
