@@ -75,12 +75,31 @@ func GetAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 	})
 }
 
-func UpdateAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
-}
-
 func DeleteAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	appid := ps.ByName("appid")
+	if appid == "" {
+		SendErrorResponse(w, http.StatusBadRequest, "Appid is not be null.")
+		return
+	}
 
+	id, err := strconv.Atoi(appid)
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = models.DeleteApp(&models.App{Id: id})
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	SendResponse(w, &Response{
+		Code:    http.StatusOK,
+		Message: "Successfully deleted this app.",
+	})
 }
 
 // Live Restful API
