@@ -143,7 +143,7 @@ func (s *Server) handleConn(conn *core.Conn) error {
 
 		token := splited[1]
 
-		if !models.CheckPublisherToken(appname, livename, token) {
+		if !models.CheckToken(appname, livename, token) {
 			err := errors.New(fmt.Sprintf("publisher token=%s is not configured", token))
 			conn.Close()
 			log.Println("Check publisher token err:", err)
@@ -174,7 +174,7 @@ func (s *Server) handleConn(conn *core.Conn) error {
 
 		token := splited[1]
 
-		if !models.CheckPlayerToken(appname, livename, token) {
+		if !models.CheckToken(appname, livename, token) {
 			err := errors.New(fmt.Sprintf("publisher token=%s is not configured", token))
 			conn.Close()
 			log.Println("checkplayertoken err:", err)

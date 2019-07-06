@@ -129,16 +129,19 @@ func (server *Server) handleConn(w http.ResponseWriter, r *http.Request) {
 	splited := strings.Split(paths[1], "_")
 	if len(splited) < 2 {
 		http.Error(w, "param is too short.", http.StatusBadRequest)
+		return
 	}
 	livename := splited[0]
 	if !models.CheckLive(livename) {
 		http.Error(w, "player livename is error", http.StatusBadRequest)
+		return
 	}
 
 	token := splited[1]
 
-	if !models.CheckPlayerToken(appname, livename, token) {
+	if !models.CheckToken(appname, livename, token) {
 		http.Error(w, "player token is error", http.StatusBadRequest)
+		return
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")

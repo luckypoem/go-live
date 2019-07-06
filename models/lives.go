@@ -7,11 +7,10 @@ import (
 )
 
 type Live struct {
-	Id             int
-	App            string `gorm:"not null"`
-	Livename       string `gorm:"not null"`
-	PublisherToken string `gorm:"not null;unique"`
-	PlayerToken    string `gorm:"not null;unique"`
+	Id       int
+	App      string `gorm:"not null"`
+	Livename string `gorm:"not null"`
+	Token    string `gorm:"not null"`
 }
 
 func init() {
@@ -40,21 +39,6 @@ func CreateLive(live *Live) error {
 	return nil
 }
 
-func GetLiveById(id int) (*Live, error) {
-	var lives []Live
-
-	err := orm.Gorm.Where("id = ?", id).Find(&lives).Error
-	if err != nil {
-		return nil, err
-	}
-
-	if len(lives) == 0 {
-		return nil, errors.New("error is rellay lives")
-	}
-
-	return &lives[0], err
-}
-
 func GetAllLives() ([]Live, error) {
 	var lives []Live
 	err := orm.Gorm.Find(&lives).Error
@@ -73,25 +57,9 @@ func DeleteLive(live *Live) error {
 	return nil
 }
 
-func CheckPublisherToken(appname string, livename string, token string) bool {
+func CheckToken(appname string, livename string, token string) bool {
 	var lives []Live
-	err := orm.Gorm.Where("app = ?", appname).Where("livename = ?", livename).Where("publisher_token = ?", token).Find(&lives).Error
-
-	if err != nil {
-		log.Println(err)
-		return false
-	}
-
-	if len(lives) == 1 {
-		return true
-	}
-
-	return false
-}
-
-func CheckPlayerToken(appname string, livename string, token string) bool {
-	var lives []Live
-	err := orm.Gorm.Where("app = ?", appname).Where("livename = ?", livename).Where("player_token = ?", token).Find(&lives).Error
+	err := orm.Gorm.Where("app = ?", appname).Where("livename = ?", livename).Where("token = ?", token).Find(&lives).Error
 
 	if err != nil {
 		log.Println(err)

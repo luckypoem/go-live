@@ -1,6 +1,7 @@
 package restfulapi
 
 import (
+	"go-live/functions"
 	"go-live/models"
 	"net/http"
 	"strconv"
@@ -104,7 +105,26 @@ func DeleteAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.
 
 // Live Restful API
 func CreateLiveHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	appname := ps.ByName("appname")
+	livename := ps.ByName("livename")
 
+	token := functions.RandomString(6)
+
+	err := models.CreateLive(&models.Live{
+		App:      appname,
+		Livename: livename,
+		Token:    token,
+	})
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	SendResponse(w, &Response{
+		Code:    http.StatusOK,
+		Message: "Successfully created this live.",
+	})
 }
 
 func ListLivesHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
