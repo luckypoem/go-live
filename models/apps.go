@@ -3,6 +3,8 @@ package models
 import (
 	"errors"
 	"go-live/orm"
+	"log"
+	"strconv"
 )
 
 type App struct {
@@ -66,4 +68,21 @@ func GetAppsByNameorLiveon(appname string) ([]App, error) {
 	}
 
 	return apps, nil
+}
+
+func CheckAppById(id int) bool {
+	var apps []App
+
+	err := orm.Gorm.Where("id = ?", strconv.Itoa(id)).Find(&apps).Error
+
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+
+	if len(apps) == 1 {
+		return true
+	}
+
+	return false
 }

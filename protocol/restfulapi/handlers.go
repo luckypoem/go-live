@@ -93,6 +93,11 @@ func DeleteAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 
+	if !models.CheckAppById(id) {
+		SendErrorResponse(w, http.StatusInternalServerError, "This app is not in the database.")
+		return
+	}
+
 	err = models.DeleteApp(&models.App{Id: id})
 
 	if err != nil {
