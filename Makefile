@@ -9,6 +9,11 @@ deps:
 run: default
 	cd ${GOPATH}/bin;./go-live
 
+docker: deps
+	go install
+	cp ${GOPATH}/bin/go-live ./main
+	sudo docker build -t go-live .
+
 clean:
 	rm -rf vendor/
 	rm -rf go.sum
