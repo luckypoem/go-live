@@ -6,6 +6,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+// App Restful API
 func CreateAppHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }

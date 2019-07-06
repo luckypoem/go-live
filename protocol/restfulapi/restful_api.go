@@ -17,6 +17,7 @@ func NewServer() *Server {
 func (server *Server) Serve(l net.Listener) error {
 	router := httprouter.New()
 
+	// APP Restful API
 	router.POST("/app/:appname", CreateAppHandler)
 	router.GET("/app", ListAppsHandler)
 	router.GET("/app/:appid", GetAppByIdHandler)
