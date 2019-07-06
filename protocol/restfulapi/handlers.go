@@ -1,6 +1,7 @@
 package restfulapi
 
 import (
+	"fmt"
 	"go-live/functions"
 	"go-live/models"
 	"net/http"
@@ -143,7 +144,19 @@ func ListLivesHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Para
 }
 
 func ListLivesByAppnameHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	appname := ps.ByName("appname")
 
+	lives, err := models.GetAllLivesByappname(appname)
+	if err != nil {
+		SendErrorResponse(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	SendResponse(w, LivesResponse{
+		Code:    http.StatusOK,
+		Message: fmt.Sprintf("Successfully acquired all lives : %s.", appname),
+		Data:    lives,
+	})
 }
 
 func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

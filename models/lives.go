@@ -48,6 +48,15 @@ func GetAllLives() ([]Live, error) {
 	return lives, nil
 }
 
+func GetAllLivesByappname(appname string) ([]Live, error) {
+	var lives []Live
+	err := orm.Gorm.Where("app = ?", appname).Find(&lives).Error
+	if err != nil {
+		return nil, err
+	}
+	return lives, nil
+}
+
 func DeleteLive(live *Live) error {
 	err := orm.Gorm.Delete(live).Error
 	if err != nil {
