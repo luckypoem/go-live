@@ -227,6 +227,11 @@ func DeleteLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter
 		return
 	}
 
+	if !models.CheckLiveById(id) {
+		SendErrorResponse(w, http.StatusBadRequest, "This live not in database.")
+		return
+	}
+
 	err = models.DeleteLive(&models.Live{
 		App: appname,
 		Id:  id,
