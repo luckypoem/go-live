@@ -3,6 +3,7 @@ package restfulapi
 import (
 	"go-live/models"
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -47,7 +48,31 @@ func ListAppsHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 }
 
 func GetAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	appid := ps.ByName("appid")
+	if appid == "" {
+		SendErrorResponse(w, http.StatusBadRequest, "Appid is not be null.")
+		return
+	}
 
+	id, err := strconv.Atoi(appid)
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	app, err := models.GetAppById(id)
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	SendResponse(w, &AppResponse{
+		Code:    http.StatusOK,
+		Data:    app,
+		Message: "Successfully obtained the corresponding application.",
+	})
 }
 
 func UpdateAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

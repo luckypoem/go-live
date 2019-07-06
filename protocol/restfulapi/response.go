@@ -22,6 +22,12 @@ type AppsResponse struct {
 	Message string       `json:"message"`
 }
 
+type AppResponse struct {
+	Code    int         `json:"code"`
+	Data    *models.App `json:"data"`
+	Message string      `json:"message"`
+}
+
 func SendErrorResponse(w http.ResponseWriter, code int, message string) {
 	SendResponse(w, &ErrorResponse{
 		Code:    code,
