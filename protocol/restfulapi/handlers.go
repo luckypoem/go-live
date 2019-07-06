@@ -1,6 +1,7 @@
 package restfulapi
 
 import (
+	"go-live/models"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -8,7 +9,26 @@ import (
 
 // App Restful API
 func CreateAppHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	appname := ps.ByName("appname")
+	liveon := r.FormValue("liveon")
+	if liveon == "" {
+		liveon = "on"
+	}
 
+	err := models.CreateApp(&models.App{
+		Appname: appname,
+		Liveon:  liveon,
+	})
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	SendResponse(w, &Response{
+		Code:    http.StatusOK,
+		Message: "Successfully created this app.",
+	})
 }
 
 func ListAppsHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {

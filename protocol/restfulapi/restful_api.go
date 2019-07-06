@@ -18,16 +18,16 @@ func (server *Server) Serve(l net.Listener) error {
 	router := httprouter.New()
 
 	// APP Restful API
-	router.POST("/app/:appname", CreateAppHandler)
+	router.POST("/app/:appname/create", CreateAppHandler)
 	router.GET("/app/", ListAppsHandler)
-	router.GET("/app/:appid", GetAppByIdHandler)
-	router.PUT("/app/:appid", UpdateAppByIdHandler)
-	router.DELETE("/app/:appid", DeleteAppByIdHandler)
+	router.GET("/app/:appid/get", GetAppByIdHandler)
+	router.PUT("/app/:appid/put", UpdateAppByIdHandler)
+	router.DELETE("/app/:appid/del", DeleteAppByIdHandler)
 
 	// Live Restful API
-	router.POST("/live/:appname", CreateLiveHandler)
+	router.POST("/live/:appname/create", CreateLiveHandler)
 	router.GET("/live/", ListLivesHandler)
-	router.GET("/live/:appid", GetLiveByIdHandler)
+	router.GET("/live/:appid/create", GetLiveByIdHandler)
 	router.PUT("/live/:appid", UpdateLiveByIdHandler)
 	router.PUT("/live/:appid/token", UpdateLiveTokenByIdHandler)
 	router.DELETE("/live/:appid", DeleteLiveByIdHandler)
