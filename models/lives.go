@@ -4,6 +4,7 @@ import (
 	"errors"
 	"go-live/orm"
 	"log"
+	"strconv"
 )
 
 type Live struct {
@@ -85,6 +86,23 @@ func CheckToken(appname string, livename string, token string) bool {
 func CheckLive(livename string) bool {
 	var lives []Live
 	err := orm.Gorm.Where("livename = ?", livename).Find(&lives).Error
+
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+
+	if len(lives) == 1 {
+		return true
+	}
+
+	return false
+}
+
+func CheckLiveById(id int) bool {
+	var lives []Live
+
+	err := orm.Gorm.Where("id = ?", strconv.Itoa(id)).Find(&lives).Error
 
 	if err != nil {
 		log.Println(err)
