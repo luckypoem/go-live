@@ -1,9 +1,11 @@
 package restfulapi
 
 import (
+	"errors"
 	"fmt"
 	"go-live/functions"
 	"go-live/models"
+	"go-live/orm"
 	"net/http"
 	"strconv"
 
@@ -160,7 +162,26 @@ func ListLivesByAppnameHandler(w http.ResponseWriter, r *http.Request, ps httpro
 }
 
 func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	var lives []models.Live
+	appname := ps.ByName("appname")
+	liveid := ps.ByName("liveid")
 
+	err := orm.Gorm.Where("app = ?", appname).Where("id = ?", liveid).Find(&lives).Error
+	if err != nil {
+		SendErrorResponse(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if len(lives) == 0 {
+		SendErrorResponse(w, http.StatusBadRequest, errors.New("lives cannot find.").Error())
+		return
+	}
+
+	SendResponse(w, &LiveResponse{
+		Code:    http.StatusOK,
+		Message: "Successfully obtained the corresponding live.",
+		Data:    lives[0],
+	})
 }
 
 func RefershLiveTokenByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
