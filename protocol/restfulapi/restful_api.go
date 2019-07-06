@@ -24,11 +24,12 @@ func (server *Server) Serve(l net.Listener) error {
 	router.DELETE("/app/:appid/del", DeleteAppByIdHandler)
 
 	// Live Restful API
-	router.POST("/live/:appname/create", CreateLiveHandler)
+	router.POST("/live/:appname/:livename/create", CreateLiveHandler)
 	router.GET("/live/", ListLivesHandler)
-	router.GET("/live/:appid/create", GetLiveByIdHandler)
-	router.PUT("/live/:appid/token", UpdateLiveTokenByIdHandler)
-	router.DELETE("/live/:appid", DeleteLiveByIdHandler)
+	router.GET("/live/:appname", ListLivesByAppnameHandler)
+	router.GET("/live/:appname/:liveid/get", GetLiveByIdHandler)
+	router.PUT("/live/:appname/:liveid/token", UpdateLiveTokenByIdHandler)
+	router.DELETE("/live/:appname/:liveid", DeleteLiveByIdHandler)
 
 	http.Serve(l, router)
 	return nil

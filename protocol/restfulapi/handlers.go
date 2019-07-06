@@ -111,6 +111,10 @@ func ListLivesHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Para
 
 }
 
+func ListLivesByAppnameHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+}
+
 func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }
