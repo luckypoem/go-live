@@ -168,7 +168,7 @@ func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 
 	err := orm.Gorm.Where("app = ?", appname).Where("id = ?", liveid).Find(&lives).Error
 	if err != nil {
-		SendErrorResponse(w, http.StatusBadRequest, err.Error())
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -189,5 +189,28 @@ func RefershLiveTokenByIdHandler(w http.ResponseWriter, r *http.Request, ps http
 }
 
 func DeleteLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	appname := ps.ByName("appname")
+	liveid := ps.ByName("liveid")
 
+	id, err := strconv.Atoi(liveid)
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = models.DeleteLive(&models.Live{
+		App: appname,
+		Id:  id,
+	})
+
+	if err != nil {
+		SendErrorResponse(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	SendResponse(w, &Response{
+		Code:    http.StatusOK,
+		Message: "Successfully deleted this live.",
+	})
 }
