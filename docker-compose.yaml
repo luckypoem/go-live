@@ -2,9 +2,7 @@ version: "2"
 
 services:
   go-live:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+    image: go-live
     restart: always
     volumes: 
       - ./config.toml:/app/config.toml
