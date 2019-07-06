@@ -115,10 +115,6 @@ func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 
 }
 
-func UpdateLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-
-}
-
 func UpdateLiveTokenByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 }
