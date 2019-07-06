@@ -121,9 +121,10 @@ func CreateLiveHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		return
 	}
 
-	SendResponse(w, &Response{
+	SendResponse(w, &CreateLiveResponse{
 		Code:    http.StatusOK,
 		Message: "Successfully created this live.",
+		Token:   token,
 	})
 }
 

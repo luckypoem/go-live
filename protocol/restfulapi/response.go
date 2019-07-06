@@ -28,6 +28,12 @@ type AppResponse struct {
 	Message string      `json:"message"`
 }
 
+type CreateLiveResponse struct {
+	Code    int    `json:"code"`
+	Token   string `json:"token"`
+	Message string `json:"message"`
+}
+
 func SendErrorResponse(w http.ResponseWriter, code int, message string) {
 	SendResponse(w, &ErrorResponse{
 		Code:    code,
