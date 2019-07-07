@@ -167,6 +167,16 @@ func (server *Server) handle(w http.ResponseWriter, r *http.Request) {
 		livename := kvsplited[0]
 		token := kvsplited[1]
 
+		if !models.CheckLive(livename) {
+			http.Error(w, "This live is not in the database.", http.StatusBadRequest)
+			return
+		}
+
+		if !models.CheckToken(appname, livename, token) {
+			http.Error(w, "Token error.", http.StatusBadRequest)
+			return
+		}
+
 		conn := server.getConn(key)
 		if conn == nil {
 			http.Error(w, ErrNoPublisher.Error(), http.StatusForbidden)
