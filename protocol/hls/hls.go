@@ -99,6 +99,12 @@ func (server *Server) handle(w http.ResponseWriter, r *http.Request) {
 	switch path.Ext(r.URL.Path) {
 	case ".m3u8":
 		key, _ := server.parseM3u8(r.URL.Path)
+		splited := strings.Split(key, "/")
+		appname := splited[0]
+		kvsplited := strings.Split(splited[1], "_")
+		livename := kvsplited[0]
+		token := kvsplited[1]
+
 		conn := server.getConn(key)
 		if conn == nil {
 			http.Error(w, ErrNoPublisher.Error(), http.StatusForbidden)
