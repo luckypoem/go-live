@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"go-live/av"
+	"go-live/models"
 	"log"
 	"net"
 	"net/http"
@@ -100,10 +101,22 @@ func (server *Server) handle(w http.ResponseWriter, r *http.Request) {
 	case ".m3u8":
 		key, _ := server.parseM3u8(r.URL.Path)
 		splited := strings.Split(key, "/")
+		if len(splited) != 2 {
+			http.Error(w, "Split error.", http.StatusBadRequest)
+			return
+		}
 		appname := splited[0]
 		kvsplited := strings.Split(splited[1], "_")
+		if len(kvsplited) != 2 {
+			http.Error(w, "Split error.", http.StatusBadRequest)
+			return
+		}
 		livename := kvsplited[0]
 		token := kvsplited[1]
+
+		if !models.CheckLive(livename) {
+
+		}
 
 		conn := server.getConn(key)
 		if conn == nil {
