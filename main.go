@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"go-live/protocol/hls"
 	"go-live/protocol/httpflv"
 	"go-live/protocol/httpopera"
 	"go-live/protocol/restfulapi"
@@ -14,6 +15,7 @@ import (
 var (
 	rtmpAddr    = flag.String("rtmp-addr", ":1935", "RTMP server listen address")
 	httpFlvAddr = flag.String("httpflv-addr", ":7001", "HTTP-FLV server listen address")
+	hlsAddr     = flag.String("hls-addr", ":7002", "HLS server listen address")
 	operaAddr   = flag.String("manage-addr", ":8090", "HTTP manage interface server listen address")
 	apiAddr     = flag.String("api-addr", ":8040", "HTTP Restful API listen address")
 )
@@ -23,7 +25,26 @@ func init() {
 	flag.Parse()
 }
 
-func startRtmp(stream *rtmp.RtmpStream) {
+func startHls() *hls.Server {
+	hlsListen, err := net.Listen("tcp", *hlsAddr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	hlsServer := hls.NewServer()
+	go func() {
+		defer func() {
+			if r := recover(); r != nil {
+				log.Println("HLS server panic: ", r)
+			}
+		}()
+		log.Println("HLS listen On", *hlsAddr)
+		hlsServer.Serve(hlsListen)
+	}()
+	return hlsServer
+}
+
+func startRtmp(stream *rtmp.RtmpStream, hlsServer *hls.Server) {
 	rtmpListen, err := net.Listen("tcp", *rtmpAddr)
 	if err != nil {
 		log.Fatal(err)
@@ -31,7 +52,7 @@ func startRtmp(stream *rtmp.RtmpStream) {
 
 	var rtmpServer *rtmp.Server
 
-	rtmpServer = rtmp.NewRtmpServer(stream, nil)
+	rtmpServer = rtmp.NewRtmpServer(stream, hlsServer)
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -110,8 +131,9 @@ func main() {
 	}()
 
 	stream := rtmp.NewRtmpStream()
+	hlsServer := startHls()
 	startHTTPFlv(stream)
 	startHTTPOpera(stream)
 	startAPI()
-	startRtmp(stream)
+	startRtmp(stream, hlsServer)
 }
