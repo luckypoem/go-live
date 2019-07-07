@@ -148,6 +148,13 @@ func (server *Server) handle(w http.ResponseWriter, r *http.Request) {
 		w.Write(body)
 	case ".ts":
 		key, _ := server.parseTs(r.URL.Path)
+
+		splited := strings.Split(key, "/")
+		appname := splited[0]
+		kvsplited := strings.Split(splited[1], "_")
+		livename := kvsplited[0]
+		token := kvsplited[1]
+
 		conn := server.getConn(key)
 		if conn == nil {
 			http.Error(w, ErrNoPublisher.Error(), http.StatusForbidden)
