@@ -54,10 +54,12 @@ func SendErrorResponse(w http.ResponseWriter, code int, message string) {
 }
 
 func SendResponse(w http.ResponseWriter, statusCode int, v interface{}) {
-	data, _ := json.Marshal(v)
-
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 
-	w.Write(data)
+	if data, err := json.Marshal(v); err == nil {
+		w.Write(data)
+	} else {
+		w.Write([]byte("Error."))
+	}
 }
