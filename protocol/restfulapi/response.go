@@ -47,14 +47,17 @@ type LiveResponse struct {
 }
 
 func SendErrorResponse(w http.ResponseWriter, code int, message string) {
-	SendResponse(w, &ErrorResponse{
+	SendResponse(w, code, &ErrorResponse{
 		Code:    code,
 		Message: message,
 	})
 }
 
-func SendResponse(w http.ResponseWriter, v interface{}) {
+func SendResponse(w http.ResponseWriter, statusCode int, v interface{}) {
 	data, _ := json.Marshal(v)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(statusCode)
 
 	w.Write(data)
 }

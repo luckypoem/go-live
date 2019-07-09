@@ -30,7 +30,7 @@ func CreateAppHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Para
 		return
 	}
 
-	SendResponse(w, &Response{
+	SendResponse(w, http.StatusOK, &Response{
 		Code:    http.StatusOK,
 		Message: "Successfully created this app.",
 	})
@@ -44,7 +44,7 @@ func ListAppsHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 		return
 	}
 
-	SendResponse(w, &AppsResponse{
+	SendResponse(w, http.StatusOK, &AppsResponse{
 		Code:    http.StatusOK,
 		Data:    apps,
 		Message: "Successfully acquired all applications.",
@@ -72,7 +72,7 @@ func GetAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		return
 	}
 
-	SendResponse(w, &AppResponse{
+	SendResponse(w, http.StatusOK, &AppResponse{
 		Code:    http.StatusOK,
 		Data:    app,
 		Message: "Successfully obtained the corresponding application.",
@@ -119,7 +119,7 @@ func DeleteAppByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.
 		return
 	}
 
-	SendResponse(w, &Response{
+	SendResponse(w, http.StatusOK, &Response{
 		Code:    http.StatusOK,
 		Message: "Successfully deleted this app.",
 	})
@@ -143,7 +143,7 @@ func CreateLiveHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Par
 		return
 	}
 
-	SendResponse(w, &LiveTokenResponse{
+	SendResponse(w, http.StatusOK, &LiveTokenResponse{
 		Code:    http.StatusOK,
 		Message: "Successfully created this live.",
 		Token:   token,
@@ -157,7 +157,7 @@ func ListLivesHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Para
 		return
 	}
 
-	SendResponse(w, LivesResponse{
+	SendResponse(w, http.StatusOK, &LivesResponse{
 		Code:    http.StatusOK,
 		Message: "Successfully acquired all lives.",
 		Data:    lives,
@@ -173,7 +173,7 @@ func ListLivesByAppnameHandler(w http.ResponseWriter, r *http.Request, ps httpro
 		return
 	}
 
-	SendResponse(w, LivesResponse{
+	SendResponse(w, http.StatusOK, &LivesResponse{
 		Code:    http.StatusOK,
 		Message: fmt.Sprintf("Successfully acquired all lives : %s.", appname),
 		Data:    lives,
@@ -196,7 +196,7 @@ func GetLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Pa
 		return
 	}
 
-	SendResponse(w, &LiveResponse{
+	SendResponse(w, http.StatusOK, &LiveResponse{
 		Code:    http.StatusOK,
 		Message: "Successfully obtained the corresponding live.",
 		Data:    lives[0],
@@ -228,7 +228,7 @@ func RefershLiveTokenByIdHandler(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 
-	SendResponse(w, &LiveTokenResponse{
+	SendResponse(w, http.StatusOK, &LiveTokenResponse{
 		Code:    http.StatusOK,
 		Message: "Successfully refreshed Token.",
 		Token:   token,
@@ -261,7 +261,7 @@ func DeleteLiveByIdHandler(w http.ResponseWriter, r *http.Request, ps httprouter
 		return
 	}
 
-	SendResponse(w, &Response{
+	SendResponse(w, http.StatusOK, &Response{
 		Code:    http.StatusOK,
 		Message: "Successfully deleted this live.",
 	})
