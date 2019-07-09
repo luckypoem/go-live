@@ -120,7 +120,7 @@ func (server *Server) handle(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if !models.CheckToken(appname, livename, token) {
-			http.Error(w, "Token error.", http.StatusBadRequest)
+			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
 			return
 		}
 
@@ -173,7 +173,7 @@ func (server *Server) handle(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if !models.CheckToken(appname, livename, token) {
-			http.Error(w, "Token error.", http.StatusBadRequest)
+			http.Error(w, "Unauthorized.", http.StatusUnauthorized)
 			return
 		}
 

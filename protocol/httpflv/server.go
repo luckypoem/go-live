@@ -140,7 +140,7 @@ func (server *Server) handleConn(w http.ResponseWriter, r *http.Request) {
 	token := splited[1]
 
 	if !models.CheckToken(appname, livename, token) {
-		http.Error(w, "player token is error", http.StatusBadRequest)
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 
