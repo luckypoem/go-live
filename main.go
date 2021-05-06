@@ -2,11 +2,11 @@ package main
 
 import (
 	"flag"
-	"go-live/protocol/hls"
-	"go-live/protocol/httpflv"
-	"go-live/protocol/httpopera"
-	"go-live/protocol/restfulapi"
-	"go-live/protocol/rtmp"
+	"github.com/luckypoem/go-live/protocol/hls"
+	"github.com/luckypoem/go-live/protocol/httpflv"
+	"github.com/luckypoem/go-live/protocol/httpopera"
+	"github.com/luckypoem/go-live/protocol/restfulapi"
+	"github.com/luckypoem/go-live/protocol/rtmp"
 	"log"
 	"net"
 	"time"
